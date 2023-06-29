@@ -1,0 +1,7 @@
+.dashboard-wrapper {
+    min-height: 0 !important;
+}
+
+.container-fluid.dashboard-content {
+    min-height: 100vh;
+}
