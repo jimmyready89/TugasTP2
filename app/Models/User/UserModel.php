@@ -9,7 +9,6 @@ class UserModel extends Model
 {
     protected $table = 'User';
     protected $primaryKey = 'id';
-    // protected $primaryKey = 'id';
     protected $attributes = [
         'active' => 1,
         'is_admin' => 0,
