@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserModel extends Model
 {
+    use HasFactory;
+
     protected $table = 'User';
     protected $primaryKey = 'id';
     protected $attributes = [
         'active' => 1,
-        'is_admin' => 0,
+        'is_admin' => 0
     ];
     protected $fillable = [
         'username',
