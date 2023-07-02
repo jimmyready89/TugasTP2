@@ -13,8 +13,6 @@ class ProductPriceModel extends Model
         'product_id',
         'price_per_unit',
         'valid_date',
-        'create_date',
-        'update_date',
         'usercreate_id',
         'userupdate_id'
     ];
