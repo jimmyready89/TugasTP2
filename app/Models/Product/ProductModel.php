@@ -12,8 +12,6 @@ class ProductModel extends Model
     protected $fillable = [
         'sku',
         'nama',
-        'create_date',
-        'update_date',
         'usercreate_id',
         'userupdate_id'
     ];
