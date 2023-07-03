@@ -27,11 +27,11 @@ class UserModel extends Model
         'is_admin'
     ];
 
-    private function PasswordCombineWithSalt(string $Password, string $Salt) : string {
+    private function PasswordCombineWithSalt(string $Password, string $Salt): string {
         return $Password . "jC4Gaq9rcfCzFmMVxf0L" . $Salt;
     }
 
-    public function SetPassword(string $Password) : void {
+    public function SetPassword(string $Password): void {
         $Salt = Str::random(30);
         $PasswordToSaveDB = $this->PasswordCombineWithSalt($Password, $Salt);
 
@@ -43,7 +43,7 @@ class UserModel extends Model
         return;
     }
 
-    public function ValidatePassword(string $Password) : bool {
+    public function ValidatePassword(string $Password): bool {
         $Salt = $this->salt;
         $PasswordToSaveDB = $this->PasswordCombineWithSalt($Password, $Salt);
 
