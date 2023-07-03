@@ -14,6 +14,7 @@ class InvoiceModel extends Model
     protected $fillable = [
         'no_invoice',
         'customer_name',
+        'date',
         'usercreate_id',
         'userupdate_id'
     ];
