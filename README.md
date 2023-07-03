@@ -24,3 +24,8 @@ php artisan migrate --path database/migrations/*
 # unit test
 php artisan test
 ```
+
+```sh
+# clean code
+vendor\bin\phpcs 
+```
