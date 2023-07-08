@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('InvoiceProductList', function (Blueprint $table) {
-            $table->bigIncrements('Id');
+            $table->bigIncrements('id');
             $table->bigInteger('invoice_id');
             $table->bigInteger('invoice_product_id');
             $table->timestampsTz($precision = 0);

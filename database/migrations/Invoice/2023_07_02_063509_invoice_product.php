@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('InvoiceProduct', function (Blueprint $table) {
-            $table->bigIncrements('Id');
+            $table->bigIncrements('id');
             $table->string('sku', 300);
             $table->string('nama', 700);
             $table->decimal('price_per_unit', $precision = 38, $scale = 4);

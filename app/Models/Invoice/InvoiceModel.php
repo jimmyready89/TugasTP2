@@ -10,7 +10,7 @@ class InvoiceModel extends Model
     use HasFactory;
 
     protected $table = 'Invoice';
-    protected $primaryKey = 'Id';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'no_invoice',
         'customer_name',
