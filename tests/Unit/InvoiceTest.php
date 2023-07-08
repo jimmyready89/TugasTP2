@@ -23,17 +23,20 @@ class InvoiceTest extends TestCase
         $this->artisan('migrate', [
             '--path' => 'database/migrations/Invoice',
         ]);
-
+    
         $Invoice = InvoiceModel::factory()->create();
-
+    
         $InvoiceProduct = InvoiceProductModel::factory()->create();
 
-        $InvoiceProductList = InvoiceProductListModel::factory()->create();
-
+        $InvoiceProductList = InvoiceProductListModel::factory()->create([
+            'invoice_id' => $Invoice->id,
+            'invoice_product_id' => $InvoiceProduct->id
+        ]);
+    
         $InvoiceTotalPrice = InvoiceTotalPriceModel::factory()->create([
             'invoice_id' => $InvoiceProductList->invoice_id,
         ]);
-
+    
         $this->assertTrue(true);
     }
 }
