@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('Layout');
 });
+
+Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
+Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
