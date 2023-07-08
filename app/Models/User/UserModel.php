@@ -15,7 +15,9 @@ class UserModel extends Model
     protected $primaryKey = 'id';
     protected $attributes = [
         'active' => 1,
-        'is_admin' => 0
+        'is_admin' => 0,
+        'password' => "",
+        'salt' => "",
     ];
     protected $fillable = [
         'username',
