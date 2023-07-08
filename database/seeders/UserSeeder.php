@@ -6,18 +6,21 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User\UserModel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        UserModel::create([
-            'username' => Str::random(5),
-            'password' => Str::random(7),
-            'salt' => Str::random(7),
-            'usercreate_id' => 1,
-            'userupdate_id' => 1,
-            'active' => 1,
-        ]);
+        if( UserModel::count() === 0 ) {
+            $user = UserModel::create([
+                'username' => Str::random(5),
+                'usercreate_id' => 0,
+                'userupdate_id' => 0,
+            ]);
+
+            $password = "admin12";
+            $user->SetPassword($password);
+        }
     }
 }
