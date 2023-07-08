@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('InvoiceProductList', function(Blueprint $table) {
+        Schema::create('InvoiceProductList', function (Blueprint $table) {
             $table->bigIncrements('Id');
             $table->bigInteger('invoice_id');
             $table->bigInteger('invoice_product_id');

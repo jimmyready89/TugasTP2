@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('sku', 300);
             $table->string('nama', 700);
             $table->decimal('price_per_unit', $precision = 38, $scale = 4);
-            $table->timestampsTz($precision = 0);
+            $table->timestampsTz();
             $table->smallInteger('active');
             $table->bigInteger('userupdate_id');
         });

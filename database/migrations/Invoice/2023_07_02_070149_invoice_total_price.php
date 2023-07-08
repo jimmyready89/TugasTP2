@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('InvoiceTotalPrice', function(Blueprint $table) {
+        Schema::create('InvoiceTotalPrice', function (Blueprint $table) {
             $table->bigInteger('invoice_id');
             $table->decimal('total_price', $precision = 38, $scale = 4);
             $table->decimal('discount_percent', $precision = 3, $scale = 3);
