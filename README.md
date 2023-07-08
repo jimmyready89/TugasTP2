@@ -27,5 +27,5 @@ php artisan test
 
 ```sh
 # clean code
-vendor\bin\phpcs 
+vendor\bin\phpcs -s
 ```
