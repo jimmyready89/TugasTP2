@@ -29,3 +29,8 @@ php artisan test
 # clean code
 vendor\bin\phpcs 
 ```
+
+```sh
+# Run Seeder
+php artisan db:seed --class=UserSeeder
+```
