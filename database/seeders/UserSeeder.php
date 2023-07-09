@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        if( UserModel::count() === 0 ) {
+        if (UserModel::count() === 0) {
             $user = UserModel::create([
                 'username' => Str::random(5),
                 'usercreate_id' => 0,

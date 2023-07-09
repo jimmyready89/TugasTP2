@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Login;
 
 use Illuminate\Foundation\Http\FormRequest;
-
 use App\Rules\User\{
     UserFormatValidation,
     PasswordFormatValidation
