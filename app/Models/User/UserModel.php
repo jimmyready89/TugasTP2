@@ -29,6 +29,10 @@ class UserModel extends Model
         'is_admin'
     ];
 
+    protected $hidden = [
+        'password'
+    ];
+
     private function PasswordCombineWithSalt(string $Password, string $Salt): string {
         return $Password . "jC4Gaq9rcfCzFmMVxf0L" . $Salt;
     }
