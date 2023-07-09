@@ -12,6 +12,7 @@
     <arg  value="np"/>
     <!-- Our base rule: set to PSR12-->
     <rule  ref="PSR12">
+        <exclude name="PSR12.Classes.ClassInstantiation.MissingParentheses"/>
     </rule>
     <rule ref="Generic.Files.LineEndings">
         <exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
@@ -19,5 +20,6 @@
     <rule ref="PSR2">
         <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
         <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+        <exclude name="PSR2.Namespaces.UseDeclaration.MultipleDeclarations"/>
     </rule>
 </ruleset>
