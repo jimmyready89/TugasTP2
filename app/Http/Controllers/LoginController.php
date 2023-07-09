@@ -17,9 +17,14 @@ class LoginController extends Controller
 
     public function Login(LoginRequest $Request): RedirectResponse {
         $RequestValidate = $Request->validated();
-        
+        $SessionUser = "";
+        $UserModel;
+
         try {
-            $UserModel = UserModel::where("username", $RequestValidate["username"])->first();
+            $UserModel = UserModel::where("username", $RequestValidate["username"])
+                ->where("active", 1)
+                ->first();
+
             if ($UserModel === null) {
                 throw new \Exception('');
             }
@@ -33,6 +38,14 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect("/")->cookie('session-user', 'value', 60);
+        try {
+            $SessionUser = UserSession::Create($UserModel);
+        } catch (\Throwable $th) {
+            return redirect('login')->withErrors([
+                "validator" => "Error login please contact support"
+            ]);
+        }
+
+        return redirect("/")->cookie('session-user', $SessionUser, 420);
     }
 }
