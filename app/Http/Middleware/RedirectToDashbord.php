@@ -16,7 +16,6 @@ class RedirectToDashbord
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         try {
             $SessionUserCookie = $request->cookie("session-user");
             if ($SessionUserCookie == "") {
@@ -25,7 +24,7 @@ class RedirectToDashbord
  
             $UserSessionJWT = UserSession::JWTContent($SessionUserCookie);
             if ($UserSessionJWT != []) {
-                return redirect('/');
+                return redirect('/dashboard');
             }
         } catch (\Throwable $th) {
         }
