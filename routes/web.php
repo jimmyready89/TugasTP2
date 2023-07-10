@@ -14,3 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "Index"]);
+
+Route::get('/product/search', [\App\Http\Controllers\ProductListController::class, "Index"])->name('product.search');
+
+Route::get('/product/create', [\App\Http\Controllers\ProductCreateController::class, "Index"])->name('product.create');

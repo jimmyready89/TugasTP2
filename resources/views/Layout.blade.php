@@ -4,16 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link href="./assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/libs/css/style.css">
-    <link rel="stylesheet" href="./assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="./assets/vendor/charts/chartist-bundle/chartist.css">
-    <link rel="stylesheet" href="./assets/vendor/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" href="./assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="./assets/vendor/charts/c3charts/c3.css">
-    <link rel="stylesheet" href="./assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
-    <link rel="stylesheet" href="./assets/custom/css/Layout.css">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/libs/css/style.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/chartist-bundle/chartist.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/morris-bundle/morris.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/assets/vendor/charts/c3charts/c3.css">
+    <link rel="stylesheet" href="/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
+    <link rel="stylesheet" href="/assets/custom/css/Layout.css">
     <title>Invoice Modul</title>
 </head>
 
@@ -22,7 +22,7 @@
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
                 <a class="navbar-brand">
-                    <img src="./assets/images/logo-invoice-model.png" alt="Logo" class="Logo_Module">
+                    <img src="/assets/images/logo-invoice-model.png" alt="Logo" class="Logo_Module">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -34,7 +34,7 @@
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="assets/images/avatar-1.jpg" alt="Avatar"
+                                <img src="/assets/images/avatar-1.jpg" alt="Avatar"
                                     class="user-avatar-md rounded-circle">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
@@ -75,39 +75,8 @@
                             <li class="nav-divider">
                                 Menu
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
-                                    data-target="#submenu-1" aria-controls="submenu-1">
-                                    <i class="fas fa-th-list"></i> Product
-                                    <span class="badge badge-success">6</span>
-                                </a>
-                                <div id="submenu-1" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard-finance.html">Product List</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard-finance.html">Product Create</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
-                                    data-target="#submenu-2" aria-controls="submenu-2">
-                                    <i class="fas fa-file"></i> Invoice
-                                </a>
-                                <div id="submenu-2" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/cards.html">Invoice List</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/general.html">Invoice Create</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                            @include('Product.ProductModule')
+                            @include('Invoice.InvoiceModule')
                         </ul>
                     </div>
                 </nav>
@@ -137,19 +106,18 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script src="./assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="./assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="./assets/libs/js/main-js.js"></script>
-    <script src="./assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
-    <script src="./assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
-    <script src="./assets/vendor/charts/morris-bundle/raphael.min.js"></script>
-    <script src="./assets/vendor/charts/morris-bundle/morris.js"></script>
-    <script src="./assets/vendor/charts/c3charts/c3.min.js"></script>
-    <script src="./assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
-    <script src="./assets/vendor/charts/c3charts/C3chartjs.js"></script>
-    @yield('script')
+        <script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+        <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+        <script src="/assets/libs/js/main-js.js"></script>
+        <script src="/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+        <script src="/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+        <script src="/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
+        <script src="/assets/vendor/charts/morris-bundle/morris.js"></script>
+        <script src="/assets/vendor/charts/c3charts/c3.min.js"></script>
+        <script src="/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+        <script src="/assets/vendor/charts/c3charts/C3chartjs.js"></script>
+        @yield('script')
 </body>
 
 </html>
