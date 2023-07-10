@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Login\LoginRequest;
 use App\Models\User\UserModel;
+use App\Models\User\UserSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use App\Models\User\UserSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -42,6 +43,12 @@ class LoginController extends Controller
         try {
             $SessionUser = UserSession::Create($UserModel);
         } catch (\Throwable $th) {
+            Auth::logout();
+ 
+            $request->session()->invalidate();
+        
+            $request->session()->regenerateToken();
+
             return redirect('login')->withErrors([
                 "validator" => "Error login please contact support"
             ]);
