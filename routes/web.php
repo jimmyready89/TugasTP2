@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return redirect('login');
+});
+
 Route::middleware(["RedirectToDashbord"])->group(function () {
     Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
     Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);

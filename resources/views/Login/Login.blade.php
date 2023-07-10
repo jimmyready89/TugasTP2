@@ -8,6 +8,7 @@
             </div>
             <div class="card-body">
                 <form action="./login" method="post">
+                    <input class="d-none" type="password">
                     <div class="form-group">
                         <input class="form-control form-control-lg" name="username" type="text" placeholder="Username" autocomplete="off">
                     </div>
