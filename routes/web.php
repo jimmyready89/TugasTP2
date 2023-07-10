@@ -17,6 +17,8 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+Route::get('/logout', [\App\Http\Controllers\LogoutController::class, "Index"]);
+
 Route::middleware(["RedirectToDashbord"])->group(function () {
     Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
     Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
@@ -25,6 +27,6 @@ Route::middleware(["RedirectToDashbord"])->group(function () {
 Route::middleware(["CheckSession", "RefreshSession"])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "Index"]);
 	
-	Route::get('/product/search', [\App\Http\Controllers\ProductListController::class, "Index"])->name('product.search');
-	Route::get('/product/create', [\App\Http\Controllers\ProductCreateController::class, "Index"])->name('product.create');
-});
+	Route::get('/product/search', [\App\Http\Controllers\ProductListController::class, "Index"]);
+	Route::get('/product/create', [\App\Http\Controllers\ProductCreateController::class, "Index"]);
+}); 
