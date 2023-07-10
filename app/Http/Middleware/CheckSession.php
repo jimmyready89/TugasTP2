@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User\UserSession;
+use Illuminate\Support\Facades\Auth;
 
 class CheckSession
 {
@@ -22,15 +23,23 @@ class CheckSession
                 throw new Exception("");
             }
 
-            $UserSession = UserSession::JWTContent($SessionUserCookie);
-            if ($UserSession == []) {
+            $UserSessionJWT = UserSession::JWTContent($SessionUserCookie);
+            if ($UserSessionJWT == []) {
                 throw new Exception("");
             }
 
             $request->merge([
-                "UserSession" => $UserSession
+                "UserSessionJWT" => $UserSessionJWT,
             ]);
+
+            Auth::loginUsingId($UserSessionJWT["user"]);
         } catch (\Throwable $th) {
+            Auth::logout();
+ 
+            $request->session()->invalidate();
+        
+            $request->session()->regenerateToken();
+
             return redirect('login');
         }
 

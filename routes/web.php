@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
-Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
+Route::middleware(["RedirectToDashbord"])->group(function () {
+    Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
+    Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
+});
 
 Route::middleware(["CheckSession", "RefreshSession"])->group(function () {
     Route::get('/', function () {

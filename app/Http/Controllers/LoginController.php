@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\User\UserSession;
+use Illuminate\Support\Facades\Gate;
 
 class LoginController extends Controller
 {
@@ -28,7 +29,7 @@ class LoginController extends Controller
             if ($UserModel === null) {
                 throw new \Exception('');
             }
-            
+
             if (!$UserModel->ValidatePassword($RequestValidate["password"])) {
                 throw new \Exception('');
             }

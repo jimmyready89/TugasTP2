@@ -4,12 +4,16 @@ namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
-class UserModel extends Model
+class UserModel extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $table = 'User';
     protected $primaryKey = 'id';
@@ -53,6 +57,10 @@ class UserModel extends Model
         $Salt = $this->salt;
         $PasswordToSaveDB = $this->PasswordCombineWithSalt($Password, $Salt);
 
-        return Hash::check($PasswordToSaveDB, $this->password);
+        return Auth::attempt([
+            'username' => $this->username,
+            'password' => $PasswordToSaveDB,
+            'active' => 1
+        ]);
     }
 }

@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckSession' => \App\Http\Middleware\CheckSession::class,
         'RefreshSession' => \App\Http\Middleware\RefreshSession::class,
+        'RedirectToDashbord' => \App\Http\Middleware\RedirectToDashbord::class,
     ];
 }
