@@ -13,10 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('Layout');
+Route::middleware(["RedirectToDashbord"])->group(function () {
+    Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
+    Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
 });
 
-Route::get('/SignIn', function () {
-    return view('SignIn/Login');
+Route::middleware(["CheckSession", "RefreshSession"])->group(function () {
+    Route::get('/', function () {
+        return view('Layout');
+    });
 });
