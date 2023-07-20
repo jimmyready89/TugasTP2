@@ -6,9 +6,7 @@ use App\Http\Requests\Login\LoginRequest;
 use App\Models\User\UserModel;
 use App\Models\User\UserSession;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class LoginController extends Controller
@@ -20,7 +18,7 @@ class LoginController extends Controller
     public function Login(LoginRequest $Request): RedirectResponse {
         $RequestValidate = $Request->validated();
         $SessionUser = "";
-        $UserModel;
+        $UserModel = "";
 
         try {
             $UserModel = UserModel::where("username", $RequestValidate["username"])
@@ -45,9 +43,9 @@ class LoginController extends Controller
         } catch (\Throwable $th) {
             Auth::logout();
  
-            $request->session()->invalidate();
+            $Request->session()->invalidate();
         
-            $request->session()->regenerateToken();
+            $Request->session()->regenerateToken();
 
             return redirect('login')->withErrors([
                 "validator" => "Error login please contact support"
