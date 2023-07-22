@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Login;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Custome\RequestForm;
 use App\Rules\User\{
     UserFormatValidation,
     PasswordFormatValidation
 };
 
-class LoginRequest extends FormRequest
+class LoginRequest extends RequestForm
 {
     public function rules(): array
     {

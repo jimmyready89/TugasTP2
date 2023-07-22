@@ -13,20 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('login');
-});
+// Route::get('/', function () {
+//     return redirect('login');
+// });
 
-Route::get('/logout', [\App\Http\Controllers\LogoutController::class, "Index"]);
+// Route::get('/logout', [\App\Http\Controllers\LogoutController::class, "Index"]);
 
-Route::middleware(["RedirectToDashbord"])->group(function () {
-    Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
-    Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
-});
+// Route::group(['middleware' => 'auth:api'], function(){
+//     Route::post('details', \App\Http\Controllers\LoginController::class, "Profile");
+// });
 
-Route::middleware(["CheckSession", "RefreshSession"])->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "Index"]);
+// Route::middleware(["RedirectToDashbord"])->group(function () {
+//     Route::get('/login', [\App\Http\Controllers\LoginController::class, "Index"]);
+//     Route::post('/login', [\App\Http\Controllers\LoginController::class, "Login"]);
+// });
+
+// Route::middleware(["CheckSession", "RefreshSession"])->group(function () {
+//     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "Index"]);
 	
-	Route::get('/product/search', [\App\Http\Controllers\ProductListController::class, "Index"]);
-	Route::get('/product/create', [\App\Http\Controllers\ProductCreateController::class, "Index"]);
-}); 
+// 	Route::get('/product/search', [\App\Http\Controllers\ProductListController::class, "Index"]);
+// 	Route::get('/product/create', [\App\Http\Controllers\ProductCreateController::class, "Index"]);
+// }); 

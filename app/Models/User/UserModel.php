@@ -34,7 +34,8 @@ class UserModel extends Authenticatable
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'salt'
     ];
 
     private function PasswordCombineWithSalt(string $Password, string $Salt): string {
