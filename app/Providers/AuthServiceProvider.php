@@ -23,18 +23,16 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
-        // Passport::routes();
 
-        // Gate::define('Admin', function ($user) {
-        //     return $user->is_admin === 1;
-        // });
+        Gate::define('Admin', function ($user) {
+            return $user->is_admin === 1;
+        });
 
-        // Gate::define('User', function ($user) {
-        //     return $user->is_admin === 0;
-        // });
+        Gate::define('User', function ($user) {
+            return $user->is_admin === 0;
+        });
     }
 }

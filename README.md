@@ -1,4 +1,4 @@
-Cara Install Project Laravel
+Proses Install Project Laravel
 
 ```sh
 # download vendor
@@ -17,8 +17,21 @@ php artisan key:generate
 
 ```sh
 # migration
+php artisan migrate
 php artisan migrate --path database/migrations/*
 ```
+
+```sh
+# Run Seeder
+php artisan db:seed --class=UserSeeder
+```
+
+```sh
+# Run create passport keys
+php artisan passport:keys
+```
+
+Sebelum Push ke repository mohon untuk jalanin comment berikut :
 
 ```sh
 # unit test
@@ -29,12 +42,3 @@ php artisan test
 # clean code
 vendor\bin\phpcs -s
 ```
-
-```sh
-# Run Seeder
-php artisan db:seed --class=UserSeeder
-```
-
-Mohon untuk membuat file untuk kebutuhan jwt session :
-- storage/key/JWT-Private.key
-- storage/key/JWT-PublicKey.Key
