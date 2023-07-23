@@ -33,7 +33,7 @@ class SignController extends Controller
         }
 
         $User = Auth::user();
-        $Token =  $User->createToken('')->plainTextToken;
+        $Token =  $User->createToken('API Token')->accessToken;
 
         return $this->sendResponse([
             'token' => $Token

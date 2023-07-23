@@ -11,16 +11,13 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     public function Search() : JsonResponse {
-        $user = auth()->user();
-      
-        return response()->json(['user' => $user], 200);
-        // $Users = UserModel::select([
-        //     "username",
-        //     "active"
-        // ])->get();
+        $Users = UserModel::select([
+            "username",
+            "active"
+        ])->get();
 
-        // return $this->sendResponse([
-        //     'users' => $Users
-        // ]);
+        return $this->sendResponse([
+            'users' => $Users
+        ]);
     }
 }
