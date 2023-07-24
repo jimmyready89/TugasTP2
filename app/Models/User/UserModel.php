@@ -1,8 +1,10 @@
 <?php
 namespace App\Models\User;
 
+use App\Models\User\UserProfileModel;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -62,5 +64,9 @@ class UserModel extends Authenticatable
             'password' => $PasswordToSaveDB,
             'active' => 1
         ]);
+    }
+
+    public function Profile(): HasOne{
+        return $this->hasOne(UserProfileModel::class, 'userid', 'id');
     }
 }

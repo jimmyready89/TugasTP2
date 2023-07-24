@@ -20,4 +20,17 @@ class UserController extends Controller
             'users' => $Users
         ]);
     }
+
+    public function Detail($Id) : JsonResponse {
+        $UserData = [];
+  
+        $User = UserModel::find($Id);
+        $UserData["username"] = $User->username;
+
+        $UserProfile = $User->Profile;
+        $UserData["realname"] = $UserProfile->real_name ?? '';
+        $UserData["email"] = $UserProfile->email ?? '';
+        
+        return $this->sendResponse($UserData);
+    }
 }

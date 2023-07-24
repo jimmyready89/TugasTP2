@@ -19,4 +19,5 @@ Route::post('sign/login', [\App\Http\Controllers\SignController::class, 'Login']
 
 Route::middleware('auth:api')->group( function () {
     Route::get('user/search', [\App\Http\Controllers\UserController::class, 'Search']);
+    Route::get('user/detail/{Id}', [\App\Http\Controllers\UserController::class, 'Detail']);
 });
