@@ -12,8 +12,8 @@ class Controller extends BaseController
     use AuthorizesRequests;
     use ValidatesRequests;
 
-    public function sendResponse(array $result = [], array $message = []) : JsonResponse {
-    	$response = [
+    public function sendResponse(array $result = [], array $message = []): JsonResponse {
+        $response = [
             'data' => (object)$result,
             'message' => $message
         ];
@@ -21,10 +21,10 @@ class Controller extends BaseController
         return response()->json($response, 200);
     }
 
-    public function sendError(array $errorMessages = [], int $code = 400, array $data = []) : JsonResponse {
-    	$response = [
+    public function sendError(array $message = [], int $code = 400, array $data = []): JsonResponse {
+        $response = [
             'data' => (object)$data,
-            'message' => $errorMessages
+            'message' => $message
         ];
 
         return response()->json($response, $code);

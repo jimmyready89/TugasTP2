@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 class SignController extends Controller
 {
-    public function Login(LoginRequest $Request) : JsonResponse {
+    public function Login(LoginRequest $Request): JsonResponse {
         $RequestValidate = $Request->validated();
         $SessionUser = "";
         $UserModel = "";
