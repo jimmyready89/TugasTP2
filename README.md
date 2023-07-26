@@ -28,6 +28,7 @@ php artisan db:seed --class=UserSeeder
 
 ```sh
 # Run create passport keys
+php artisan passport:client --personal
 php artisan passport:keys
 ```
 

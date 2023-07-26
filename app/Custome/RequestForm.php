@@ -7,10 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class RequestForm extends FormRequest {
+class RequestForm extends FormRequest
+{
     public $stopOnFirstFailure = true;
 
-    protected function failedValidation(Validator $validator) : void {
+    protected function failedValidation(Validator $validator): void {
         $response = new JsonResponse([
             'message' => [$validator->errors()->first()],
         ], 400);

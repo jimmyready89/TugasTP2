@@ -8,7 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Http\Requests\User\{
-    UpdateRequest
+    UpdateRequest,
+    CreateRequest
 };
 
 class UserController extends Controller
@@ -24,10 +25,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function Detail($Id): JsonResponse {
+    public function Detail(int $Id): JsonResponse {
         $UserData = [];
-  
-        $User = UserModel::find($Id);
+        
+        try {
+            $User = UserModel::find($Id);
+            if ($user === null) {
+                throw new \Exception('User Id Invalid');
+            }
+        } catch (Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
         $UserData["username"] = $User->username;
 
         $UserProfile = $User->Profile;
@@ -37,7 +48,7 @@ class UserController extends Controller
         return $this->sendResponse($UserData);
     }
 
-    public function Update(UpdateRequest $Request, $Id): JsonResponse {
+    public function Update(UpdateRequest $Request, int $Id): JsonResponse {
         $Message = [];
   
         try {
@@ -64,16 +75,44 @@ class UserController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function Delete($Id): JsonResponse {
-        $UserData = [];
-  
-        $User = UserModel::find($Id);
-        $UserData["username"] = $User->username;
+    public function Create(CreateRequest $Request): JsonResponse {
+        $UserName = $Request->username;
+        $password = $Request->password;
+        $RealName = $Request->real_name;
+        $Email = $Request->email;
+        $UserId = auth()->id();
 
-        $UserProfile = $User->Profile;
-        $UserData["realname"] = $UserProfile->real_name ?? '';
-        $UserData["email"] = $UserProfile->email ?? '';
-        
-        return $this->sendResponse($UserData);
+        try {
+            $UserNameExisting = UserModel::where([
+                "username" => $UserName
+            ])->exists();
+
+            if ($UserNameExisting) {
+                throw new \Exception("Username has been used");
+            }
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        $User = UserModel::create([
+            'username' => $UserName,
+            'usercreate_id' => $UserId,
+            'userupdate_id' => $UserId
+        ]);
+
+        $User->SetPassword($password);
+
+        $User->Profile()->Create([
+            "real_name" => $RealName,
+            "email" => $Email
+        ]);
+
+        $Message[] = "Create User Success";
+
+        return $this->sendResponse(result:[
+            "UserId" => $User->id
+        ], message: $Message);
     }
 }

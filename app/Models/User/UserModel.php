@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models\User;
 
 use App\Models\User\UserProfileModel;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
