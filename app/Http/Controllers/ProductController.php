@@ -35,6 +35,7 @@ class ProductController extends Controller
 
         try {
             $ProductNameExisting = ProductModel::where([
+                'sku' => $Sku,
                 "nama" => $Nama
             ])->exists();
             if ($ProductNameExisting) {
