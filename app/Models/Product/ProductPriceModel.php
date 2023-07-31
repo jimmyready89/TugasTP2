@@ -18,4 +18,8 @@ class ProductPriceModel extends Model
         'usercreate_id',
         'userupdate_id'
     ];
+
+    protected $casts = [
+        'price_per_unit' => 'double',
+    ];
 }

@@ -22,4 +22,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
     Route::get('user/{Id}', [\App\Http\Controllers\UserController::class, 'Detail']);
     Route::put('user/{Id}', [\App\Http\Controllers\UserController::class, 'Update']);
+
+    Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
 });
