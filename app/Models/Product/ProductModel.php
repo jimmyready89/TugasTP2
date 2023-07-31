@@ -23,5 +23,4 @@ class ProductModel extends Model
     public function Price(): HasMany{
         return $this->HasMany(ProductPriceModel::class, 'product_id', 'id');
     }
-
 }

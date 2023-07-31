@@ -11,17 +11,18 @@ class CreateProductRequest extends RequestForm
         return [
             "sku" => ["required", "string"],
             "nama" => ["required", "string"],
-            "price_per_unit" => ["required", "numeric", "decimal:2"],
-            "valid_date" => ["required", "date_format:Y-m-d"] 
+            "price_per_unit" => ["required", "decimal:2", "min:1"],
+            "valid_date" => ["required", "date_format:Y-m-d"]
         ];
     }
 
-    public function message(): array {
+    public function messages(): array {
         return [
             "required" => ":attribute is required",
             "string" => ":attribute must be string",
-            "numeric" => ":attribute must be number",
-            "valid_date" => ":attribute invalid date format"
+            "date_format" => ":attribute invalid date format",
+            "min" => ":attribute minimum is :min",
+            "decimal" => ":attribute invalid format"
         ];
     }
 
@@ -29,8 +30,8 @@ class CreateProductRequest extends RequestForm
         return [
             "sku" => "Sku",
             "nama" => "Nama",
-            "price_per_unit" => "Price_Per_Unit",
-            "valid_date" => "Valid_Date"
+            "price_per_unit" => "Price Per Unit",
+            "valid_date" => "Valid Date"
         ];
     }
 }

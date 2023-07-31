@@ -17,7 +17,7 @@ class ProductController extends Controller
         $Sku = $Request->sku;
         $Nama = $Request->nama;
         $PricePerUnit = $Request->price_per_unit;
-        $ValidateDate = $Request->validate_date;
+        $ValidateDate = $Request->valid_date;
         $UserId = Auth()->id();
 
         try {
@@ -55,7 +55,7 @@ class ProductController extends Controller
 
         $Product->Price()->Create([
             'price_per_unit' => $PricePerUnit,
-            'valid_date' => now()->format("Y-m-d"),
+            'valid_date' => $ValidateDate,
             'usercreate_id' => $UserId,
             'userupdate_id' => $UserId
         ]);
