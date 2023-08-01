@@ -67,4 +67,24 @@ class ProductController extends Controller
             "ProductId" => $Product->id
         ], message: $Message);
     }
+
+    public function ProductDetail(int $Id): JsonResponse {
+        $ProductData = [];
+
+        try {
+            $Product = ProductModel::find($Id);
+            if ($Product === null) {
+                throw new \Exception('Product Id Invalid');
+            }
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        $ProductData["nama"] = $Product->nama;
+        $ProductData["sku"] = $Product->sku;
+       
+        return $this->sendResponse($ProductData);
+    }
 }
