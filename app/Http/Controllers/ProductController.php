@@ -8,7 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Product\{
-    CreateProductRequest
+    CreateProductRequest,
+    UpdateProductRequest
 };
 
 class ProductController extends Controller
@@ -86,5 +87,55 @@ class ProductController extends Controller
         $ProductData["sku"] = $Product->sku;
        
         return $this->sendResponse($ProductData);
+    }
+
+    public function ProductUpdate(UpdateProductRequest $Request, int $Id): JsonResponse {
+        $ProductData = [];
+
+        try {
+            $Sku = $Request->sku;
+            $Nama = $Request->nama;
+            $UserId = Auth()->id();
+
+            $Product = ProductModel::find($Id);
+            if ($Product === null) {
+                throw new \Exception('Product Id Invalid');
+            }
+
+            $ProductSkuExisting = ProductModel::where([
+                ["sku", "=", $Sku],
+                ["id", "<>", $Id]
+            ])->exists();
+            if ($ProductSkuExisting) {
+                throw new \Exception("Sku has been already use");
+            }
+
+            $ProductNameExisting = ProductModel::where([
+                ["sku", "=", $Sku],
+                ["nama", "=", $Nama],
+                ["id", "<>", $Id]
+            ])->exists();
+            if ($ProductNameExisting) {
+                throw new \Exception("Nama has been already use");
+            }
+
+            $Product->sku = $Sku;
+            $Product->nama = $Nama;
+            $Product->userupdate_id = $UserId;
+
+            if ($Product->isClean(['sku', 'nama'])) {
+                throw new \Exception("No Change");
+            }
+
+            $Product->save();
+
+            $Message[] = "Update Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(message: $Message);
     }
 }
