@@ -30,10 +30,10 @@ class UserController extends Controller
         
         try {
             $User = UserModel::find($Id);
-            if ($user === null) {
+            if ($User === null) {
                 throw new \Exception('User Id Invalid');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
