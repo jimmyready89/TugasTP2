@@ -138,4 +138,27 @@ class ProductController extends Controller
 
         return $this->sendResponse(message: $Message);
     }
+
+    public function ProductPrice(int $Id): JsonResponse {
+        $PriceList = [];
+
+        try {
+            $Product = ProductModel::find($Id);
+            if ($Product === null) {
+                throw new \Exception('Product Id Invalid');
+            }
+
+            $PriceList = $Product->Price
+                ->setVisible(['id', 'price_per_unit', 'valid_date'])
+                ->toArray();
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse([
+            "price_list" => $PriceList
+        ]);
+    }
 }
