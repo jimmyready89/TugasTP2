@@ -149,7 +149,7 @@ class ProductController extends Controller
 
             $Product = ProductModel::find($Id);
 
-            if ($Product === null ) {
+            if ($Product === null) {
                 throw new \Exception('Product Id Invalid');
             }
 
@@ -161,13 +161,11 @@ class ProductController extends Controller
             ]);
             
             $Message[] = "Add Price Success";
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-        
         return $this->sendResponse(message: $Message);
-
-    }   
+    }
 }
