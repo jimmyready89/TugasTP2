@@ -140,32 +140,55 @@ class ProductController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function AddPrice(AddPriceProductRequest $Request, int $Id): JsonResponse {
-        
+    public function ProductPrice(int $Id): JsonResponse {
+        $PriceList = [];
+
         try {
-            $PricePerUnit = $Request->price_per_unit;
-            $ValidDate = $Request->valid_date;
-            $UserId = Auth()->id();
-
             $Product = ProductModel::find($Id);
-
             if ($Product === null) {
                 throw new \Exception('Product Id Invalid');
             }
 
-            $Product->Price()->Create([
-                'price_per_unit' => $PricePerUnit,
-                'valid_date' => $ValidDate,
-                'usercreate_id' => $UserId,
-                'userupdate_id' => $UserId
-            ]);
-            
-            $Message[] = "Add Price Success";
+            $PriceList = $Product->Price
+                ->setVisible(['id', 'price_per_unit', 'valid_date'])
+                ->toArray();
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-        return $this->sendResponse(message: $Message);
+
+        return $this->sendResponse([
+            "price_list" => $PriceList
+        ]);
     }
+  
+    public function AddPrice(AddPriceProductRequest $Request, int $Id): JsonResponse {
+
+          try {
+              $PricePerUnit = $Request->price_per_unit;
+              $ValidDate = $Request->valid_date;
+              $UserId = Auth()->id();
+
+              $Product = ProductModel::find($Id);
+
+              if ($Product === null) {
+                  throw new \Exception('Product Id Invalid');
+              }
+
+              $Product->Price()->Create([
+                  'price_per_unit' => $PricePerUnit,
+                  'valid_date' => $ValidDate,
+                  'usercreate_id' => $UserId,
+                  'userupdate_id' => $UserId
+              ]);
+
+              $Message[] = "Add Price Success";
+          } catch (\Exception $e) {
+              $Message[] = $e->getMessage();
+
+              return $this->sendError(message: $Message);
+          }
+          return $this->sendResponse(message: $Message);
+      }
 }

@@ -21,5 +21,6 @@ class ProductPriceModel extends Model
 
     protected $casts = [
         'price_per_unit' => 'double',
+        'valid_date' => 'date:d-M-Y',
     ];
 }
