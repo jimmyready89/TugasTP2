@@ -53,27 +53,27 @@ class ProductController extends Controller
             if ($ProductNameExisting) {
                 throw new \Exception("Nama has been already use");
             }
+
+            $Product = ProductModel::create([
+                'sku' => $Sku,
+                'nama' => $Nama,
+                'usercreate_id' => $UserId,
+                'userupdate_id' => $UserId
+            ]);
+
+            $Product->Price()->Create([
+                'price_per_unit' => $PricePerUnit,
+                'valid_date' => $ValidateDate,
+                'usercreate_id' => $UserId,
+                'userupdate_id' => $UserId
+            ]);
+
+            $Message[] = "Create Product Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-
-        $Product = ProductModel::create([
-            'sku' => $Sku,
-            'nama' => $Nama,
-            'usercreate_id' => $UserId,
-            'userupdate_id' => $UserId
-        ]);
-
-        $Product->Price()->Create([
-            'price_per_unit' => $PricePerUnit,
-            'valid_date' => $ValidateDate,
-            'usercreate_id' => $UserId,
-            'userupdate_id' => $UserId
-        ]);
-
-        $Message[] = "Create Product Success";
 
         return $this->sendResponse(result:[
             "ProductId" => $Product->id
@@ -88,14 +88,14 @@ class ProductController extends Controller
             if ($Product === null) {
                 throw new \Exception('Product Id Invalid');
             }
+
+            $ProductData["nama"] = $Product->nama;
+            $ProductData["sku"] = $Product->sku;
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-
-        $ProductData["nama"] = $Product->nama;
-        $ProductData["sku"] = $Product->sku;
        
         return $this->sendResponse($ProductData);
     }
