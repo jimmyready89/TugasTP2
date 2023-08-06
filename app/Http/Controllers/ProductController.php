@@ -175,30 +175,31 @@ class ProductController extends Controller
   
     public function AddPrice(AddPriceProductRequest $Request, int $Id): JsonResponse {
 
-          try {
-              $PricePerUnit = $Request->price_per_unit;
-              $ValidDate = $Request->valid_date;
-              $UserId = Auth()->id();
+        try {
+            $PricePerUnit = $Request->price_per_unit;
+            $ValidDate = $Request->valid_date;
+            $UserId = Auth()->id();
 
-              $Product = ProductModel::find($Id);
+            $Product = ProductModel::find($Id);
 
-              if ($Product === null) {
-                  throw new \Exception('Product Id Invalid');
-              }
+            if ($Product === null) {
+                throw new \Exception('Product Id Invalid');
+            }
 
-              $Product->Price()->Create([
-                  'price_per_unit' => $PricePerUnit,
-                  'valid_date' => $ValidDate,
-                  'usercreate_id' => $UserId,
-                  'userupdate_id' => $UserId
-              ]);
+            $Product->Price()->Create([
+                'price_per_unit' => $PricePerUnit,
+                'valid_date' => $ValidDate,
+                'usercreate_id' => $UserId,
+                'userupdate_id' => $UserId
+            ]);
 
-              $Message[] = "Add Price Success";
-          } catch (\Exception $e) {
-              $Message[] = $e->getMessage();
+            $Message[] = "Add Price Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
 
-              return $this->sendError(message: $Message);
-          }
-          return $this->sendResponse(message: $Message);
-      }
+            return $this->sendError(message: $Message);
+        }
+          
+        return $this->sendResponse(message: $Message);
+    }
 }
