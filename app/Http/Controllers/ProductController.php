@@ -39,13 +39,7 @@ class ProductController extends Controller
             if ($ProductSkuExisting) {
                 throw new \Exception("Sku has been already use");
             }
-        } catch (\Exception $e) {
-            $Message[] = $e->getMessage();
 
-            return $this->sendError(message: $Message);
-        }
-
-        try {
             $ProductNameExisting = ProductModel::where([
                 'sku' => $Sku,
                 "nama" => $Nama
