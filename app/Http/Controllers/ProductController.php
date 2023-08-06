@@ -15,6 +15,16 @@ use App\Http\Requests\Product\{
 
 class ProductController extends Controller
 {
+    public function Index(): JsonResponse {
+        $ProductList = [];
+
+        $ProductList = ProductModel::select('id', 'sku', 'nama')->get();
+
+        return $this->sendResponse(result:[
+            "product_list" => $ProductList
+        ]);
+    }
+
     public function Create(CreateProductRequest $Request): JsonResponse {
         $Sku = $Request->sku;
         $Nama = $Request->nama;
