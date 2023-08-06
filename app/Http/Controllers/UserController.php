@@ -21,7 +21,7 @@ class UserController extends Controller
         ])->get();
 
         return $this->sendResponse([
-            'users' => $Users
+            'user_list' => $Users
         ]);
     }
 
@@ -112,7 +112,7 @@ class UserController extends Controller
         $Message[] = "Create User Success";
 
         return $this->sendResponse(result:[
-            "UserId" => $User->id
+            "user_id" => $User->id
         ], message: $Message);
     }
 }
