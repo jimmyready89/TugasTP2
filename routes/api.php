@@ -23,12 +23,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user/{Id}', [\App\Http\Controllers\UserController::class, 'Detail']);
     Route::put('user/{Id}', [\App\Http\Controllers\UserController::class, 'Update']);
 
-    
-    Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
-    Route::get('product/detail/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductDetail']);
-    Route::put('product/detail/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductUpdate']);
-    Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
+    Route::put('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
     Route::get('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'ProductPrice']);
-    Route::put('product/price/{Id}', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
-    Route::patch('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
+    Route::post('product/{Id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
+    Route::get('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductDetail']);
+    Route::put('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductUpdate']);
+    Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
+    Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
 });

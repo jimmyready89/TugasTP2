@@ -211,32 +211,32 @@ class ProductController extends Controller
             $PricePerUnit = $Request->price_per_unit;
             $ValidDate = $Request->valid_date;
             $UserId = Auth()->id();
-            
+
             // Ambil id spesifik dari table ProductPriceModel
             $ProductPrice = ProductPriceModel::find($Id);
     
             if (!$ProductPrice) {
                 throw new \Exception('Product Price Id Invalid');
             }
-            
+
             // Update data harga
             $ProductPrice->price_per_unit = $PricePerUnit;
             $ProductPrice->valid_date = $ValidDate;
             $ProductPrice->usercreate_id = $UserId;
             $ProductPrice->userupdate_id = $UserId;
 
-            if ($ProductPrice->isClean(['price_per_unit'])) {
+            if ($ProductPrice->isClean(['price_per_unit', 'valid_date'])) {
                 throw new \Exception("No Change");
             }
 
             $ProductPrice->save();
-    
+
             $Message[] = "Edit Price Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
             return $this->sendError(message: $Message);
         }
-        
+
         return $this->sendResponse(message: $Message);
     }
 }
