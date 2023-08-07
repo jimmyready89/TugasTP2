@@ -222,7 +222,6 @@ class ProductController extends Controller
             // Update data harga
             $ProductPrice->price_per_unit = $PricePerUnit;
             $ProductPrice->valid_date = $ValidDate;
-            $ProductPrice->usercreate_id = $UserId;
             $ProductPrice->userupdate_id = $UserId;
 
             if ($ProductPrice->isClean(['price_per_unit', 'valid_date'])) {
