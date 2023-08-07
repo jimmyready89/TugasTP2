@@ -14,15 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::post('register', [RegisterController::class, 'register']);
 Route::post('sign/login', [\App\Http\Controllers\SignController::class, 'Login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
-    Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
     Route::get('user/{Id}', [\App\Http\Controllers\UserController::class, 'Detail']);
     Route::put('user/{Id}', [\App\Http\Controllers\UserController::class, 'Update']);
-
+    Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
+    Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
+  
     Route::put('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
     Route::get('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'ProductPrice']);
     Route::post('product/{Id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
