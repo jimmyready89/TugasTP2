@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\ProductModel;
+use App\Models\Product\ProductPriceModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Product\{
     CreateProductRequest,
     UpdateProductRequest,
-    AddPriceProductRequest
+    AddPriceProductRequest,
+    EditPriceProductRequest
 };
 
 class ProductController extends Controller
@@ -193,7 +195,41 @@ class ProductController extends Controller
 
             return $this->sendError(message: $Message);
         }
-          
+
+        return $this->sendResponse(message: $Message);
+    }
+
+    public function EditPrice(EditPriceProductRequest $Request, int $Id): JsonResponse {
+
+        try {
+            $PricePerUnit = $Request->price_per_unit;
+            $ValidDate = $Request->valid_date;
+            $UserId = Auth()->id();
+
+            // Ambil id spesifik dari table ProductPriceModel
+            $ProductPrice = ProductPriceModel::find($Id);
+    
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+
+            // Update data harga
+            $ProductPrice->price_per_unit = $PricePerUnit;
+            $ProductPrice->valid_date = $ValidDate;
+            $ProductPrice->userupdate_id = $UserId;
+
+            if ($ProductPrice->isClean(['price_per_unit', 'valid_date'])) {
+                throw new \Exception("No Change");
+            }
+
+            $ProductPrice->save();
+
+            $Message[] = "Edit Price Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+            return $this->sendError(message: $Message);
+        }
+
         return $this->sendResponse(message: $Message);
     }
 }

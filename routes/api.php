@@ -21,9 +21,10 @@ Route::middleware('auth:api')->group(function () {
     Route::put('user/{Id}', [\App\Http\Controllers\UserController::class, 'Update']);
     Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
     Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
-    
+  
+    Route::put('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
     Route::get('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'ProductPrice']);
-    Route::post('product/{id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
+    Route::post('product/{Id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
     Route::get('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductDetail']);
     Route::put('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductUpdate']);
     Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
