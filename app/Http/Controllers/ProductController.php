@@ -232,4 +232,24 @@ class ProductController extends Controller
 
         return $this->sendResponse(message: $Message);
     }
+
+    public function RemovePrice(Request $Request, int $Id): JsonResponse {
+
+        try {
+            $ProductPrice = ProductPriceModel::find($Id);
+    
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+    
+            $ProductPrice->delete();
+    
+            $Message[] = "Product Price Remove Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+            return $this->sendError(message: $Message);
+        }
+    
+        return $this->sendResponse(message: $Message);
+    }
 }
