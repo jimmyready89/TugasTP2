@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\ProductModel;
+use App\Models\Product\ProductPriceModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Product\{
     CreateProductRequest,
     UpdateProductRequest,
-    AddPriceProductRequest
+    AddPriceProductRequest,
+    EditPriceProductRequest
 };
 
 class ProductController extends Controller
@@ -39,13 +40,7 @@ class ProductController extends Controller
             if ($ProductSkuExisting) {
                 throw new \Exception("Sku has been already use");
             }
-        } catch (\Exception $e) {
-            $Message[] = $e->getMessage();
 
-            return $this->sendError(message: $Message);
-        }
-
-        try {
             $ProductNameExisting = ProductModel::where([
                 'sku' => $Sku,
                 "nama" => $Nama
@@ -53,27 +48,27 @@ class ProductController extends Controller
             if ($ProductNameExisting) {
                 throw new \Exception("Nama has been already use");
             }
+
+            $Product = ProductModel::create([
+                'sku' => $Sku,
+                'nama' => $Nama,
+                'usercreate_id' => $UserId,
+                'userupdate_id' => $UserId
+            ]);
+
+            $Product->Price()->Create([
+                'price_per_unit' => $PricePerUnit,
+                'valid_date' => $ValidateDate,
+                'usercreate_id' => $UserId,
+                'userupdate_id' => $UserId
+            ]);
+
+            $Message[] = "Create Product Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-
-        $Product = ProductModel::create([
-            'sku' => $Sku,
-            'nama' => $Nama,
-            'usercreate_id' => $UserId,
-            'userupdate_id' => $UserId
-        ]);
-
-        $Product->Price()->Create([
-            'price_per_unit' => $PricePerUnit,
-            'valid_date' => $ValidateDate,
-            'usercreate_id' => $UserId,
-            'userupdate_id' => $UserId
-        ]);
-
-        $Message[] = "Create Product Success";
 
         return $this->sendResponse(result:[
             "ProductId" => $Product->id
@@ -88,14 +83,14 @@ class ProductController extends Controller
             if ($Product === null) {
                 throw new \Exception('Product Id Invalid');
             }
+
+            $ProductData["nama"] = $Product->nama;
+            $ProductData["sku"] = $Product->sku;
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
             return $this->sendError(message: $Message);
         }
-
-        $ProductData["nama"] = $Product->nama;
-        $ProductData["sku"] = $Product->sku;
        
         return $this->sendResponse($ProductData);
     }
@@ -199,7 +194,61 @@ class ProductController extends Controller
 
             return $this->sendError(message: $Message);
         }
-          
+
+        return $this->sendResponse(message: $Message);
+    }
+
+    public function EditPrice(EditPriceProductRequest $Request, int $Id): JsonResponse {
+
+        try {
+            $PricePerUnit = $Request->price_per_unit;
+            $ValidDate = $Request->valid_date;
+            $UserId = Auth()->id();
+
+            // Ambil id spesifik dari table ProductPriceModel
+            $ProductPrice = ProductPriceModel::find($Id);
+    
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+
+            // Update data harga
+            $ProductPrice->price_per_unit = $PricePerUnit;
+            $ProductPrice->valid_date = $ValidDate;
+            $ProductPrice->userupdate_id = $UserId;
+
+            if ($ProductPrice->isClean(['price_per_unit', 'valid_date'])) {
+                throw new \Exception("No Change");
+            }
+
+            $ProductPrice->save();
+
+            $Message[] = "Edit Price Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(message: $Message);
+    }
+
+    public function RemovePrice(int $Id): JsonResponse {
+
+        try {
+            $ProductPrice = ProductPriceModel::find($Id);
+    
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+    
+            $ProductPrice->delete();
+    
+            $Message[] = "Product Price Remove Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+            return $this->sendError(message: $Message);
+        }
+    
         return $this->sendResponse(message: $Message);
     }
 }

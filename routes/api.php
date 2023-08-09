@@ -14,22 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::post('register', [RegisterController::class, 'register']);
 Route::post('sign/login', [\App\Http\Controllers\SignController::class, 'Login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
-    Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
     Route::get('user/{Id}', [\App\Http\Controllers\UserController::class, 'Detail']);
     Route::put('user/{Id}', [\App\Http\Controllers\UserController::class, 'Update']);
-
-    
-    Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
-    Route::get('product/detail/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductDetail']);
-    Route::put('product/detail/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductUpdate']);
-    Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
+    Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
+    Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
+  
+    Route::delete('product/{Id}', [\App\Http\Controllers\ProductController::class, 'RemovePrice']);
+    Route::put('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
     Route::get('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'ProductPrice']);
-    Route::put('product/price/{id}', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
+    Route::post('product/{Id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
+    Route::get('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductDetail']);
+    Route::put('product/{Id}', [\App\Http\Controllers\ProductController::class, 'ProductUpdate']);
+    Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
+    Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
 
     Route::get('invoice', [\App\Http\Controllers\InvoiceController::class, 'Index']);
 });
