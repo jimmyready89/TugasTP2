@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Product\ProductModel;
 use App\Models\Product\ProductPriceModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Product\{
     CreateProductRequest,
@@ -233,7 +232,7 @@ class ProductController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function RemovePrice(Request $Request, int $Id): JsonResponse {
+    public function RemovePrice(int $Id): JsonResponse {
 
         try {
             $ProductPrice = ProductPriceModel::find($Id);
