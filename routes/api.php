@@ -22,7 +22,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user', [\App\Http\Controllers\UserController::class, 'Search']);
     Route::post('user', [\App\Http\Controllers\UserController::class, 'Create']);
   
-    Route::delete('product/{Id}', [\App\Http\Controllers\ProductController::class, 'RemovePrice']);
+    Route::delete('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'RemovePrice']);
     Route::put('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'EditPrice']);
     Route::get('product/{Id}/Price', [\App\Http\Controllers\ProductController::class, 'ProductPrice']);
     Route::post('product/{Id}/price', [\App\Http\Controllers\ProductController::class, 'AddPrice']);
