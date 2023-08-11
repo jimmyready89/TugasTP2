@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
     Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
 
+    Route::post('invoice/{Id}/AddProduct', [\App\Http\Controllers\InvoiceController::class, 'AddProduct']);
     Route::get('invoice', [\App\Http\Controllers\InvoiceController::class, 'Index']);
     Route::post('invoice', [\App\Http\Controllers\InvoiceController::class, 'Create']);
 });
