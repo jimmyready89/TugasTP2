@@ -18,4 +18,8 @@ class InvoiceModel extends Model
         'usercreate_id',
         'userupdate_id'
     ];
+
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 }

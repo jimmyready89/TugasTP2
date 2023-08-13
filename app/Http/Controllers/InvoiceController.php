@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice\InvoiceModel;
+use App\Models\Invoice\InvoiceProductModel;
+use App\Models\Product\ProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +59,50 @@ class InvoiceController extends Controller
 
         return $this->sendResponse(result:[
             "InvoiceId" => $Invoice->id
+        ], message: $Message);
+    }
+
+    public function AddProduct(Request $Request, int $Id): JsonResponse {
+        $ProductId = $Request->product_id;
+        $UserId = Auth()->id();
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invalid invoice");
+            }
+
+            $Product = ProductModel::find($ProductId);
+            if (!$Product) {
+                throw new \Exception("Invalid product");
+            }
+            
+            $ProductPrice = $Product->PriceValidByDate($Invoice->date);
+            if ($ProductPrice <= 0) {
+                throw new \Exception("Invalid Price product");
+            }
+
+            $InvoiceProduct = InvoiceProductModel::create([
+                'sku' => $Product->sku,
+                'nama' => $Product->nama,
+                'price_per_unit' => $ProductPrice,
+                'userupdate_id' => $UserId
+            ]);
+
+            $InvoiceProduct->Invoice()->Create([
+                'invoice_product_id' => $ProductId,
+                'userupdate_id' => $UserId
+            ]);
+
+            $Message[] = "Add Product Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(result:[
+            "InvoiceId" => $InvoiceProduct->id
         ], message: $Message);
     }
 }
