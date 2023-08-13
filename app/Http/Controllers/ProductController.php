@@ -198,15 +198,20 @@ class ProductController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function EditPrice(EditPriceProductRequest $Request, int $Id): JsonResponse {
-
+    public function EditPrice(EditPriceProductRequest $Request, int $Id, int $PriceId): JsonResponse {
         try {
             $PricePerUnit = $Request->price_per_unit;
             $ValidDate = $Request->valid_date;
             $UserId = Auth()->id();
 
+            // Ambil id spesifik dari table ProductModel
+            $Product = ProductModel::find($Id);
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+
             // Ambil id spesifik dari table ProductPriceModel
-            $ProductPrice = ProductPriceModel::find($Id);
+            $ProductPrice = $Product->Price()->find($Id);
     
             if (!$ProductPrice) {
                 throw new \Exception('Product Price Id Invalid');
@@ -232,10 +237,16 @@ class ProductController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function RemovePrice(int $Id): JsonResponse {
-
+    public function RemovePrice(int $Id, int $PriceId): JsonResponse {
         try {
-            $ProductPrice = ProductPriceModel::find($Id);
+            // Ambil id spesifik dari table ProductModel
+            $Product = ProductModel::find($Id);
+            if (!$ProductPrice) {
+                throw new \Exception('Product Price Id Invalid');
+            }
+
+            // Ambil id spesifik dari table ProductPriceModel
+            $ProductPrice = $Product->Price()->find($Id);
     
             if (!$ProductPrice) {
                 throw new \Exception('Product Price Id Invalid');
