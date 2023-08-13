@@ -206,7 +206,7 @@ class ProductController extends Controller
 
             // Ambil id spesifik dari table ProductModel
             $Product = ProductModel::find($Id);
-            if (!$ProductPrice) {
+            if (!$Product) {
                 throw new \Exception('Product Price Id Invalid');
             }
 
