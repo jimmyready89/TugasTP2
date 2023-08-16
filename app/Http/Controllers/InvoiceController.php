@@ -10,7 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Invoice\{
-    CreateInvoiceRequest
+    CreateInvoiceRequest,
+    EditInvoiceRequest
 };
 
 class InvoiceController extends Controller
@@ -107,16 +108,22 @@ class InvoiceController extends Controller
     }
 
     public function EditInvoice(EditInvoiceRequest $Request, int $Id) {
+        $NoInvoice = $Request->no_invoice;
+        $CustomerName = $Request->customer_name;
+        $Date = $Request->date;
+        $UserId = Auth()->id();
 
         try {
-            $NoInvoice = $Request->no_invoice;
-            $CustomerName = $Request->customer_name;
-            $Date = $Request->date;
-            $UserId = Auth()->id();
-
             $Invoice = InvoiceModel::find($Id);
             if (!$Invoice) {
                 throw new \Exception('Invoice Id Invalid');
+            }
+
+            $InvoiceData = InvoiceModel::where([
+                'no_invoice' => $NoInvoice,
+            ])->exists();
+            if ($InvoiceData) {
+                throw new \Exception('No Invoice has been already use');
             }
     
             $Invoice->no_invoice = $NoInvoice;
