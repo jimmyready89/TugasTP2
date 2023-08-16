@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice\InvoiceModel;
-use App\Models\Invoice\InvoiceProductModel;
 use App\Models\Product\ProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -82,15 +81,10 @@ class InvoiceController extends Controller
                 throw new \Exception("Invalid Price product");
             }
 
-            $InvoiceProduct = InvoiceProductModel::create([
+            $InvoiceProduct = $Invoice->ProductList()->create([
                 'sku' => $Product->sku,
                 'nama' => $Product->nama,
                 'price_per_unit' => $ProductPrice,
-                'userupdate_id' => $UserId
-            ]);
-
-            $InvoiceProduct->Invoice()->Create([
-                'invoice_product_id' => $ProductId,
                 'userupdate_id' => $UserId
             ]);
 
