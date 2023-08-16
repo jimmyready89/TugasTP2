@@ -27,8 +27,8 @@ class ProductModel extends Model
 
     public function PriceValidByDate(carbon $Date): float {
         return $this->HasMany(ProductPriceModel::class, 'product_id', 'id')
-            ->where([["valid_date", ">=", $Date]])
-            ->orderBy('valid_date')
+            ->where([["valid_date", "<=", $Date]])
+            ->orderByDesc('valid_date')
             ->first()->price_per_unit ?? 0.00;
     }
 }

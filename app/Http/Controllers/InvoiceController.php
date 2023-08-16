@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice\InvoiceModel;
-use App\Models\Invoice\InvoiceProductModel;
 use App\Models\Product\ProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Invoice\EditInvoiceRequest;
 use App\Http\Requests\Invoice\{
     CreateInvoiceRequest,
     EditInvoiceRequest
@@ -18,7 +17,6 @@ class InvoiceController extends Controller
 {
     public function Index(): JsonResponse {
         $InvoiceList = [];
-        $UserId = Auth()->id();
 
         $InvoiceList = InvoiceModel::select('id', 'no_invoice', 'customer_name', 'date')->get();
 
@@ -83,15 +81,10 @@ class InvoiceController extends Controller
                 throw new \Exception("Invalid Price product");
             }
 
-            $InvoiceProduct = InvoiceProductModel::create([
+            $InvoiceProduct = $Invoice->ProductList()->create([
                 'sku' => $Product->sku,
                 'nama' => $Product->nama,
                 'price_per_unit' => $ProductPrice,
-                'userupdate_id' => $UserId
-            ]);
-
-            $InvoiceProduct->Invoice()->Create([
-                'invoice_product_id' => $ProductId,
                 'userupdate_id' => $UserId
             ]);
 
@@ -147,22 +140,19 @@ class InvoiceController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function RemoveProduct(int $Id) {
+    public function RemoveProduct(int $Id, int $ProductId) {
         
         try {
-            $InvoiceProduct = InvoiceProductModel::find($Id);
-            if (!$InvoiceProduct) {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
                 throw new \Exception("Invoice product not found");
             }
-    
-            $InvoiceList = $InvoiceProduct->Invoice; // Mengambil relasi Invoice
-            if (!$InvoiceList) {
-                throw new \Exception("Invoice not found");
+            
+            $InvoiceProduct = $Invoice->ProductList()->find($ProductId);
+            if (!$InvoiceProduct) {
+                throw new \Exception("Invoice Prodcut not found");
             }
-    
-            // Menghapus InvoiceProductListModel yang terkait
-            $InvoiceProduct->Invoice()->delete();
-    
+
             // Menghapus InvoiceProductModel itu sendiri
             $InvoiceProduct->delete();
     
@@ -174,5 +164,26 @@ class InvoiceController extends Controller
         }
     
         return $this->sendResponse(message: $Message);
+    }
+
+    public function ProductList(int $Id) {
+        $ProductList = [];
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invoice not found");
+            }
+
+            $ProductList = $Invoice->ProductList()->select(["id", "nama", "sku", "price_per_unit"])->get();
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+    
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(result:[
+            "prodcut_list" => $ProductList
+        ]);
     }
 }

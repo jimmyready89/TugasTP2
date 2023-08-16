@@ -4,6 +4,8 @@ namespace App\Models\Invoice;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Invoice\InvoiceProductModel;
 
 class InvoiceModel extends Model
 {
@@ -22,4 +24,8 @@ class InvoiceModel extends Model
     protected $casts = [
         'date' => 'datetime',
     ];
+
+    public function ProductList(): HasMany{
+        return $this->hasMany(InvoiceProductModel::class, "invoice_id", "id");
+    }
 }
