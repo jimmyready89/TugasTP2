@@ -16,7 +16,6 @@ class InvoiceController extends Controller
 {
     public function Index(): JsonResponse {
         $InvoiceList = [];
-        $UserId = Auth()->id();
 
         $InvoiceList = InvoiceModel::select('id', 'no_invoice', 'customer_name', 'date')->get();
 
