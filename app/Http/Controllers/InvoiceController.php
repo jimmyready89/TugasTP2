@@ -139,4 +139,33 @@ class InvoiceController extends Controller
 
         return $this->sendResponse(message: $Message);
     }
+
+    public function RemoveProduct(int $Id) {
+        
+        try {
+            $InvoiceProduct = InvoiceProductModel::find($Id);
+            if (!$InvoiceProduct) {
+                throw new \Exception("Invoice product not found");
+            }
+    
+            $InvoiceList = $InvoiceProduct->Invoice; // Mengambil relasi Invoice
+            if (!$InvoiceList) {
+                throw new \Exception("Invoice not found");
+            }
+    
+            // Menghapus InvoiceProductListModel yang terkait
+            $InvoiceProduct->Invoice()->delete();
+    
+            // Menghapus InvoiceProductModel itu sendiri
+            $InvoiceProduct->delete();
+    
+            $Message[] = "Remove Product Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+    
+            return $this->sendError(message: $Message);
+        }
+    
+        return $this->sendResponse(message: $Message);
+    }
 }
