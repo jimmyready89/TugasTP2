@@ -133,22 +133,19 @@ class InvoiceController extends Controller
         return $this->sendResponse(message: $Message);
     }
 
-    public function RemoveProduct(int $Id) {
+    public function RemoveProduct(int $Id, int $ProductId) {
         
         try {
-            $InvoiceProduct = InvoiceProductModel::find($Id);
-            if (!$InvoiceProduct) {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
                 throw new \Exception("Invoice product not found");
             }
-    
-            $InvoiceList = $InvoiceProduct->Invoice; // Mengambil relasi Invoice
-            if (!$InvoiceList) {
-                throw new \Exception("Invoice not found");
+            
+            $InvoiceProduct = $Invoice->ProductList()->find($ProductId);
+            if (!$InvoiceProduct) {
+                throw new \Exception("Invoice Prodcut not found");
             }
-    
-            // Menghapus InvoiceProductListModel yang terkait
-            $InvoiceProduct->Invoice()->delete();
-    
+
             // Menghapus InvoiceProductModel itu sendiri
             $InvoiceProduct->delete();
     
@@ -160,5 +157,26 @@ class InvoiceController extends Controller
         }
     
         return $this->sendResponse(message: $Message);
+    }
+
+    public function ProductList(int $Id) {
+        $ProductList = [];
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invoice not found");
+            }
+
+            $ProductList = $Invoice->ProductList()->select(["id", "nama", "sku", "price_per_unit"])->get();
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+    
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(result:[
+            "prodcut_list" => $ProductList
+        ]);
     }
 }
