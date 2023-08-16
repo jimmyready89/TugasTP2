@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::delete('invoice/{Id}/RemoveProduct/{productId}', [\App\Http\Controllers\InvoiceController::class, 'RemoveProduct']);
     Route::post('invoice/{Id}/AddProduct', [\App\Http\Controllers\InvoiceController::class, 'AddProduct']);
+    Route::put('invoice/{Id}', [\App\Http\Controllers\InvoiceController::class, 'EditInvoice']);
     Route::get('invoice', [\App\Http\Controllers\InvoiceController::class, 'Index']);
     Route::post('invoice', [\App\Http\Controllers\InvoiceController::class, 'Create']);
 });

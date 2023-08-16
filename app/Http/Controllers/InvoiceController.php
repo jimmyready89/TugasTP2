@@ -106,6 +106,40 @@ class InvoiceController extends Controller
         ], message: $Message);
     }
 
+    public function EditInvoice(EditInvoiceRequest $Request, int $Id) {
+
+        try {
+            $NoInvoice = $Request->no_invoice;
+            $CustomerName = $Request->customer_name;
+            $Date = $Request->date;
+            $UserId = Auth()->id();
+
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception('Invoice Id Invalid');
+            }
+    
+            $Invoice->no_invoice = $NoInvoice;
+            $Invoice->customer_name = $CustomerName;
+            $Invoice->date = $Date;
+            $Invoice->userupdate_id = $UserId;
+
+            if ($Invoice->isClean(['no_invoice', 'customer_name', 'date'])) {
+                throw new \Exception('No Change');
+            }
+    
+            $Invoice->save();
+    
+            $Message[] = "Edit Invoice Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(message: $Message);
+    }
+
     public function RemoveProduct(int $Id) {
         
         try {
