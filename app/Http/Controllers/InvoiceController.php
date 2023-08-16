@@ -7,7 +7,7 @@ use App\Models\Invoice\InvoiceModel;
 use App\Models\Product\ProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Invoice\EditInvoiceRequest;
 use App\Http\Requests\Invoice\{
     CreateInvoiceRequest
 };
