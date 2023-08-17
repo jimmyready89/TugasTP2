@@ -161,8 +161,10 @@ class InvoiceController extends Controller
             }
 
             $InvoiceData = InvoiceModel::where([
-                'no_invoice' => $NoInvoice,
-            ])->exists();
+                ['no_invoice', '=', $NoInvoice],
+                ['id', '<>', $Id]
+            ])
+            ->exists();
             if ($InvoiceData) {
                 throw new \Exception('No Invoice has been already use');
             }
