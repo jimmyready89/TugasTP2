@@ -25,6 +25,33 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function Detail(int $Id): JsonResponse {
+        $NoInvoice = "";
+        $CustomerName = "";
+        $Date = "";
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invalid invoice");
+            }
+
+            $NoInvoice = $Invoice->no_invoice;
+            $CustomerName = $Invoice->customer_name;
+            $Date = $Invoice->date->format("d-M-Y");
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(result:[
+            "no_invoice" => $NoInvoice,
+            "customer_name" => $CustomerName,
+            "date" => $Date
+        ]);
+    }
+
     public function Create(CreateInvoiceRequest $Request): JsonResponse {
         $NoInvoice = $Request->no_invoice ?? '';
         $CustomerName = $Request->customer_name ?? '';
