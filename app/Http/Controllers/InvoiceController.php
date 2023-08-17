@@ -28,6 +28,10 @@ class InvoiceController extends Controller
         $NoInvoice = "";
         $CustomerName = "";
         $Date = "";
+        $DiscountPercent = 0;
+        $DiscountAmount = 0;
+        $TotalPrice = 0;
+        $SubTotal = 0;
 
         try {
             $Invoice = InvoiceModel::find($Id);
@@ -38,6 +42,13 @@ class InvoiceController extends Controller
             $NoInvoice = $Invoice->no_invoice;
             $CustomerName = $Invoice->customer_name;
             $Date = $Invoice->date->format("d-M-Y");
+
+            $InvoiceTotalPrice = $Invoice->InvoiceTotalPrice;
+
+            $SubTotal = $InvoiceTotalPrice->total_price;
+            $DiscountPercent = $InvoiceTotalPrice->discount_percent;
+            $DiscountAmount = $InvoiceTotalPrice->discount_amount;
+            $TotalPrice = $InvoiceTotalPrice->total_price_after_discount;
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
@@ -47,7 +58,15 @@ class InvoiceController extends Controller
         return $this->sendResponse(result:[
             "no_invoice" => $NoInvoice,
             "customer_name" => $CustomerName,
-            "date" => $Date
+            "date" => $Date,
+            "price" => [
+                "subtotal" => $SubTotal,
+                "discount" => [
+                    "percent" => $DiscountPercent,
+                    "amount" => $DiscountAmount
+                ],
+                "total" => $TotalPrice
+            ]
         ]);
     }
 
@@ -114,6 +133,8 @@ class InvoiceController extends Controller
                 'userupdate_id' => $UserId
             ]);
 
+            $Invoice->UpdateTotalPrice($UserId);
+
             $Message[] = "Add Product Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
@@ -167,7 +188,8 @@ class InvoiceController extends Controller
     }
 
     public function RemoveProduct(int $Id, int $ProductId) {
-        
+        $UserId = Auth()->id();
+
         try {
             $Invoice = InvoiceModel::find($Id);
             if (!$Invoice) {
@@ -181,7 +203,9 @@ class InvoiceController extends Controller
 
             // Menghapus InvoiceProductModel itu sendiri
             $InvoiceProduct->delete();
-    
+            
+            $Invoice->UpdateTotalPrice($UserId);
+
             $Message[] = "Remove Product Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
