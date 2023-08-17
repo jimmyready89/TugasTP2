@@ -9,7 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\Invoice\{
     CreateInvoiceRequest,
-    EditInvoiceRequest
+    EditInvoiceRequest,
+    EditDiscountInvoiceRequest
 };
 
 class InvoiceController extends Controller
@@ -178,6 +179,31 @@ class InvoiceController extends Controller
             $Invoice->save();
     
             $Message[] = "Edit Invoice Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(message: $Message);
+    }
+
+    public function EditDiscountInvoice(EditDiscountInvoiceRequest $Request, int $Id) {
+        $DiscountPercent = $Request->discount_percent;
+        if (!($DiscountPercent > 0)) {
+            $DiscountPercent = 0;
+        }
+        $UserId = Auth()->id();
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception('Invoice Id Invalid');
+            }
+
+            $Invoice->UpdateTotalPrice($UserId, $DiscountPercent);
+
+            $Message[] = "Edit Discount Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
