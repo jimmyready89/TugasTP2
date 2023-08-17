@@ -8,17 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('User', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('username', 700);
-            $table->string('password', 700);
-            $table->string('salt', 300);
-            $table->timestampsTz($precision = 0);
-            $table->bigInteger('usercreate_id');
-            $table->bigInteger('userupdate_id');
-            $table->smallInteger('active');
-            $table->smallInteger('is_admin');
-        });
+        if (!Schema::hasTable('User')) {
+            Schema::create('User', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('username', 700);
+                $table->string('password', 700);
+                $table->string('salt', 300);
+                $table->timestampsTz($precision = 0);
+                $table->bigInteger('usercreate_id');
+                $table->bigInteger('userupdate_id');
+                $table->smallInteger('active');
+                $table->smallInteger('is_admin');
+            });
+        }
     }
 
     public function down(): void

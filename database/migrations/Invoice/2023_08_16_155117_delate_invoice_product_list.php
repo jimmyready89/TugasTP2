@@ -10,6 +10,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('InvoiceProductList');
+        if (Schema::hasTable('InvoiceProductList')) {
+            Schema::dropIfExists('InvoiceProductList');
+        }
     }
 };
