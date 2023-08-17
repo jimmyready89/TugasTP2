@@ -14,7 +14,7 @@ class EditPriceProductRequest extends RequestForm
         ];
     }
 
-    public function message(): array {
+    public function messages(): array {
         return [
             "required" => ":attribute is required",
             "date_format" => ":attribute invalid date format",

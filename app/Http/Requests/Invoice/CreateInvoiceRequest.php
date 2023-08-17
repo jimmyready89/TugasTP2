@@ -15,7 +15,7 @@ class CreateInvoiceRequest extends RequestForm
         ];
     }
 
-    public function message(): array {
+    public function messages(): array {
         return [
             "string" => ":attribute must be string",
             "date_format" => ":attribute invalid date format",
