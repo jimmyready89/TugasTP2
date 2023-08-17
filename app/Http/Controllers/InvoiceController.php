@@ -175,9 +175,9 @@ class InvoiceController extends Controller
             if ($Invoice->isClean(['no_invoice', 'customer_name', 'date'])) {
                 throw new \Exception('No Change');
             }
-    
+
             $Invoice->save();
-    
+
             $Message[] = "Edit Invoice Success";
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
