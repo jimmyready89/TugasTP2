@@ -8,15 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('Invoice', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('no_invoice', 700);
-            $table->string('customer_name', 700);
-            $table->date('date');
-            $table->timestampsTz($precision = 0);
-            $table->bigInteger('usercreate_id');
-            $table->bigInteger('userupdate_id');
-        });
+        if (!Schema::hasTable('Invoice')) {
+            Schema::create('Invoice', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('no_invoice', 700);
+                $table->string('customer_name', 700);
+                $table->date('date');
+                $table->timestampsTz($precision = 0);
+                $table->bigInteger('usercreate_id');
+                $table->bigInteger('userupdate_id');
+            });
+        }
     }
 
     public function down(): void

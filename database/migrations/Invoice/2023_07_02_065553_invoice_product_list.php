@@ -8,13 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('InvoiceProductList', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('invoice_id');
-            $table->bigInteger('invoice_product_id');
-            $table->timestampsTz($precision = 0);
-            $table->bigInteger('userupdate_id');
-        });
+        if (!Schema::hasTable('InvoiceProductList')) {
+            Schema::create('InvoiceProductList', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->bigInteger('invoice_id');
+                $table->bigInteger('invoice_product_id');
+                $table->timestampsTz($precision = 0);
+                $table->bigInteger('userupdate_id');
+            });
+        }
     }
 
     public function down(): void

@@ -31,10 +31,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('product', [\App\Http\Controllers\ProductController::class, 'Create']);
     Route::get('product', [\App\Http\Controllers\ProductController::class, 'Index']);
 
-    Route::delete('invoice/{Id}/Product/{productId}', [\App\Http\Controllers\InvoiceController::class, 'RemoveProduct']);
-    Route::post('invoice/{Id}/Product', [\App\Http\Controllers\InvoiceController::class, 'AddProduct']);
-    Route::get('invoice/{Id}/Product', [\App\Http\Controllers\InvoiceController::class, 'ProductList']);
+    Route::delete('invoice/{Id}/product/{productId}', [\App\Http\Controllers\InvoiceController::class, 'RemoveProduct']);
+    Route::post('invoice/{Id}/product', [\App\Http\Controllers\InvoiceController::class, 'AddProduct']);
+    Route::get('invoice/{Id}/product', [\App\Http\Controllers\InvoiceController::class, 'ProductList']);
+    Route::put('invoice/{Id}/discount', [\App\Http\Controllers\InvoiceController::class, 'EditDiscountInvoice']);
     Route::put('invoice/{Id}', [\App\Http\Controllers\InvoiceController::class, 'EditInvoice']);
+    Route::get('invoice/{Id}', [\App\Http\Controllers\InvoiceController::class, 'Detail']);
     Route::get('invoice', [\App\Http\Controllers\InvoiceController::class, 'Index']);
     Route::post('invoice', [\App\Http\Controllers\InvoiceController::class, 'Create']);
 });

@@ -11,11 +11,11 @@ class EditInvoiceRequest extends RequestForm
         return [
             "no_invoice" => ["required", "string"],
             "customer_name" => ["required", "string"],
-            "date" => ["required", "date_format:Y-m-d"]
+            "date" => ["required", "date_format:Y-m-d"],
         ];
     }
 
-    public function message(): array {
+    public function messages(): array {
         return [
             "required" => ":attirbute is required",
             "date_format" => ":attribute invalid date format"

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('InvoiceProduct', function (Blueprint $table) {
-            $table->bigInteger('invoice_id')->nullable();
-        });
+        if (!Schema::hasColumn('InvoiceProduct', 'invoice_id')) {
+            Schema::table('InvoiceProduct', function (Blueprint $table) {
+                $table->bigInteger('invoice_id')->nullable();
+            });
+        }
     }
 
     /**
