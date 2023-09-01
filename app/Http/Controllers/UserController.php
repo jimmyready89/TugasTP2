@@ -16,6 +16,7 @@ class UserController extends Controller
 {
     public function Search(): JsonResponse {
         $Users = UserModel::select([
+            "id",
             "username",
             "active"
         ])->get();
