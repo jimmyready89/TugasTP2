@@ -250,12 +250,12 @@ class ProductController extends Controller
         try {
             // Ambil id spesifik dari table ProductModel
             $Product = ProductModel::find($Id);
-            if (!$ProductPrice) {
+            if (!$Product) {
                 throw new \Exception('Product Price Id Invalid');
             }
 
             // Ambil id spesifik dari table ProductPriceModel
-            $ProductPrice = $Product->Price()->find($Id);
+            $ProductPrice = $Product->Price()->find($PriceId);
     
             if (!$ProductPrice) {
                 throw new \Exception('Product Price Id Invalid');
