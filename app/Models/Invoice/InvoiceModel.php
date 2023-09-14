@@ -36,7 +36,7 @@ class InvoiceModel extends Model
     }
     
     public function UpdateTotalPrice(int $UserId, float $Discount = null): void{
-        $TotalPrice = $this->ProductList()->sum("price_per_unit");
+        $TotalPrice = $this->ProductList()->sum(\DB::raw("price_per_unit * count"));
         if (!($TotalPrice > 0)) {
             $TotalPrice = 0;
         }
