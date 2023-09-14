@@ -46,10 +46,10 @@ class InvoiceController extends Controller
 
             $InvoiceTotalPrice = $Invoice->InvoiceTotalPrice;
 
-            $SubTotal = $InvoiceTotalPrice->total_price;
-            $DiscountPercent = $InvoiceTotalPrice->discount_percent;
-            $DiscountAmount = $InvoiceTotalPrice->discount_amount;
-            $TotalPrice = $InvoiceTotalPrice->total_price_after_discount;
+            $SubTotal = $InvoiceTotalPrice->total_price ?? 0;
+            $DiscountPercent = $InvoiceTotalPrice->discount_percent ?? 0;
+            $DiscountAmount = $InvoiceTotalPrice->discount_amount ?? 0;
+            $TotalPrice = $InvoiceTotalPrice->total_price_after_discount ?? 0;
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
