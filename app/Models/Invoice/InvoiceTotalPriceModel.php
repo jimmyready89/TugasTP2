@@ -18,4 +18,11 @@ class InvoiceTotalPriceModel extends Model
         'total_price_after_discount',
         'userupdate_id'
     ];
+  
+    protected $attributes = [
+        'total_price' => 0,
+        'discount_percent' => 0,
+        'discount_amount' => 0,
+        'total_price_after_discount' => 0,
+    ];
 }

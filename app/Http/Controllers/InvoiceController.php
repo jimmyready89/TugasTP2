@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Invoice\{
     CreateInvoiceRequest,
     EditInvoiceRequest,
-    EditDiscountInvoiceRequest
+    EditDiscountInvoiceRequest,
+    AddProductRequest
 };
 
 class InvoiceController extends Controller
@@ -46,10 +47,10 @@ class InvoiceController extends Controller
 
             $InvoiceTotalPrice = $Invoice->InvoiceTotalPrice;
 
-            $SubTotal = $InvoiceTotalPrice->total_price;
-            $DiscountPercent = $InvoiceTotalPrice->discount_percent;
-            $DiscountAmount = $InvoiceTotalPrice->discount_amount;
-            $TotalPrice = $InvoiceTotalPrice->total_price_after_discount;
+            $SubTotal = $InvoiceTotalPrice->total_price ?? 0;
+            $DiscountPercent = $InvoiceTotalPrice->discount_percent ?? 0;
+            $DiscountAmount = $InvoiceTotalPrice->discount_amount ?? 0;
+            $TotalPrice = $InvoiceTotalPrice->total_price_after_discount ?? 0;
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
 
@@ -107,8 +108,9 @@ class InvoiceController extends Controller
         ], message: $Message);
     }
 
-    public function AddProduct(Request $Request, int $Id): JsonResponse {
+    public function AddProduct(AddProductRequest $Request, int $Id): JsonResponse {
         $ProductId = $Request->product_id;
+        $Count = $Request->count;
         $UserId = Auth()->id();
 
         try {
@@ -121,6 +123,14 @@ class InvoiceController extends Controller
             if (!$Product) {
                 throw new \Exception("Invalid product");
             }
+
+            $InvoiceProductExists = $Invoice->ProductList()->where([
+                "sku" => $Product->sku
+            ])->exists();
+
+            if ($InvoiceProductExists) {
+                throw new \Exception("Product Already Added");
+            }
             
             $ProductPrice = $Product->PriceValidByDate($Invoice->date);
             if ($ProductPrice <= 0) {
@@ -131,6 +141,7 @@ class InvoiceController extends Controller
                 'sku' => $Product->sku,
                 'nama' => $Product->nama,
                 'price_per_unit' => $ProductPrice,
+                'count' => $Count,
                 'userupdate_id' => $UserId
             ]);
 
@@ -253,7 +264,14 @@ class InvoiceController extends Controller
                 throw new \Exception("Invoice not found");
             }
 
-            $ProductList = $Invoice->ProductList()->select(["id", "nama", "sku", "price_per_unit"])->get();
+            $ProductList = $Invoice->ProductList()->select([
+                "id",
+                "nama",
+                "sku",
+                "count",
+                "price_per_unit",
+                \DB::raw("price_per_unit * count as total")
+            ])->get();
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
     

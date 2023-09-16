@@ -18,10 +18,13 @@ class InvoiceProductModel extends Model
         'sku',
         'nama',
         'price_per_unit',
+        'count',
         'userupdate_id'
     ];
+
     protected $attributes = [
-        'active' => 1
+        'active' => 1,
+        'count' => 1
     ];
 
     public function Invoice(): HasOne{
