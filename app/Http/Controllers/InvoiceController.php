@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice\InvoiceModel;
 use App\Models\Product\ProductModel;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Http\Requests\Invoice\{
     CreateInvoiceRequest,
     EditInvoiceRequest,
@@ -19,7 +18,12 @@ class InvoiceController extends Controller
     public function Index(): JsonResponse {
         $InvoiceList = [];
 
-        $InvoiceList = InvoiceModel::select('id', 'no_invoice', 'customer_name', 'date')->get();
+        $InvoiceModelList = InvoiceModel::select('id', 'date', 'no_invoice', 'customer_name')->get();
+        foreach ($InvoiceModelList as $Invoice) {
+            $InvoiceToArray = $Invoice->attributesToArray();
+            $InvoiceToArray["price_total"] = $Invoice->InvoiceTotalPrice->total_price_after_discount ?? 0;
+            $InvoiceList[] = $InvoiceToArray;
+        }
 
         return $this->sendResponse(result:[
             "invoice_list" => $InvoiceList
