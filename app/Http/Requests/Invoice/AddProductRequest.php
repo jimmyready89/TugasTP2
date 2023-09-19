@@ -16,7 +16,7 @@ class AddProductRequest extends RequestForm
 
     public function messages(): array {
         return [
-            "required" => ":attirbute is required",
+            "required" => ":attribute is required",
             "numeric" => ":attribute must be numeric",
             "min" => ":attribute minimum :min",
         ];

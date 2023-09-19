@@ -272,7 +272,7 @@ class InvoiceController extends Controller
             
             $InvoiceProduct = $Invoice->ProductList()->find($ProductId);
             if (!$InvoiceProduct) {
-                throw new \Exception("Invoice Prodcut not found");
+                throw new \Exception("Invoice Product not found");
             }
 
             // Menghapus InvoiceProductModel itu sendiri
@@ -314,7 +314,7 @@ class InvoiceController extends Controller
         }
 
         return $this->sendResponse(result:[
-            "prodcut_list" => $ProductList
+            "product_list" => $ProductList
         ]);
     }
 }
