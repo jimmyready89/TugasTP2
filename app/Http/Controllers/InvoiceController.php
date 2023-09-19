@@ -10,7 +10,8 @@ use App\Http\Requests\Invoice\{
     CreateInvoiceRequest,
     EditInvoiceRequest,
     EditDiscountInvoiceRequest,
-    AddProductRequest
+    AddProductRequest,
+    EditProductInvoiceRequest
 };
 
 class InvoiceController extends Controller
@@ -227,6 +228,36 @@ class InvoiceController extends Controller
             return $this->sendError(message: $Message);
         }
 
+        return $this->sendResponse(message: $Message);
+    }
+
+    public function EditProduct(EditProductInvoiceRequest $Request, int $Id, int $ProductId) {
+        $UserId = Auth()->id();
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invoice product not found");
+            }
+            
+            $InvoiceProduct = $Invoice->ProductList()->find($ProductId);
+            if (!$InvoiceProduct) {
+                throw new \Exception("Invoice product not found");
+            }
+
+            // Menghapus InvoiceProductModel itu sendiri
+            $InvoiceProduct->count = $Request->count;
+            $InvoiceProduct->save();
+            
+            $Invoice->UpdateTotalPrice($UserId);
+
+            $Message[] = "Update Product Success";
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+    
+            return $this->sendError(message: $Message);
+        }
+    
         return $this->sendResponse(message: $Message);
     }
 
