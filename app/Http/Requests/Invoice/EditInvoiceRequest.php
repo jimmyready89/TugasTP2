@@ -17,7 +17,7 @@ class EditInvoiceRequest extends RequestForm
 
     public function messages(): array {
         return [
-            "required" => ":attirbute is required",
+            "required" => ":attribute is required",
             "date_format" => ":attribute invalid date format"
         ];
     }
