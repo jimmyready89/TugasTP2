@@ -12,7 +12,8 @@ use App\Http\Requests\Invoice\{
     EditInvoiceRequest,
     EditDiscountInvoiceRequest,
     AddProductRequest,
-    EditProductInvoiceRequest
+    EditProductInvoiceRequest,
+    ProductSaleRequest
 };
 
 class InvoiceController extends Controller
@@ -319,8 +320,10 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function ProductSaleList(int $Id) {
+    public function ProductSaleList(ProductSaleRequest $Request, int $Id) {
         $ProductList = [];
+
+        $Parm = $Request->Parm ?? "";
 
         try {
             $Invoice = InvoiceModel::find($Id);
@@ -334,7 +337,7 @@ class InvoiceController extends Controller
                 "sku"
             ])->get();
 
-            $ProductModelList = ProductModel::whereNotIn('sku', $InvoiceProductSKUList)
+            $ProductModelQuery = ProductModel::whereNotIn('sku', $InvoiceProductSKUList)
                 ->whereHas('Price', function (Builder $query) use ($InvoiceDate) {
                     $query->where('valid_date', '<=', $InvoiceDate);
                 })
@@ -342,7 +345,18 @@ class InvoiceController extends Controller
                     "sku",
                     "nama",
                     "id"
-                ])->get();
+                ])
+                ->orderBy('sku')
+                ->orderBy('nama');
+
+            if ($Parm != "") {
+                $ProductModelQuery = $ProductModelQuery->where(function (Builder $Query) use ($Parm) {
+                    $Query->where('sku', 'like', "{$Parm}%")
+                        ->orWhere('nama', 'like', "%{$Parm}%");
+                });
+            }
+
+            $ProductModelList = $ProductModelQuery->get();
  
             foreach ($ProductModelList as $Product) {
                 $ProductList[] = [
