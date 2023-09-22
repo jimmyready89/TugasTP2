@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice\InvoiceModel;
 use App\Models\Product\ProductModel;
@@ -307,6 +308,50 @@ class InvoiceController extends Controller
                 "price_per_unit",
                 \DB::raw("price_per_unit * count as total")
             ])->get();
+        } catch (\Exception $e) {
+            $Message[] = $e->getMessage();
+    
+            return $this->sendError(message: $Message);
+        }
+
+        return $this->sendResponse(result:[
+            "product_list" => $ProductList
+        ]);
+    }
+
+    public function ProductSaleList(int $Id) {
+        $ProductList = [];
+
+        try {
+            $Invoice = InvoiceModel::find($Id);
+            if (!$Invoice) {
+                throw new \Exception("Invoice not found");
+            }
+
+            $InvoiceDate = $Invoice->date;
+
+            $InvoiceProductSKUList = $Invoice->ProductList()->select([
+                "sku"
+            ])->get();
+
+            $ProductModelList = ProductModel::whereNotIn('sku', $InvoiceProductSKUList)
+                ->whereHas('Price', function (Builder $query) use ($InvoiceDate) {
+                    $query->where('valid_date', '<=', $InvoiceDate);
+                })
+                ->select([
+                    "sku",
+                    "nama",
+                    "id"
+                ])->get();
+ 
+            foreach ($ProductModelList as $Product) {
+                $ProductList[] = [
+                    "sku" => $Product->sku,
+                    "nama" => $Product->nama,
+                    "id" => $Product->id,
+                    "price" => $Product->PriceValidByDate($InvoiceDate)
+                ];
+            }
         } catch (\Exception $e) {
             $Message[] = $e->getMessage();
     
