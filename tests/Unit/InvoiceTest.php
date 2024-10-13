@@ -5,18 +5,19 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Models\Invoice\InvoiceModel;
 use App\Models\Invoice\InvoiceProductModel;
-use App\Models\Invoice\InvoiceTotalPriceModel;
 
 class InvoiceTest extends TestCase
 {
     protected static $Invoice;
 
-    public function test_invoice_create(): void
-    {
+    public function test_init_database(): void {
         $this->artisan('migrate', [
             '--path' => 'database/migrations/Invoice',
-        ]);
-    
+        ])->assertSuccessful();
+    }
+
+    public function test_invoice_create(): void
+    {
         self::$Invoice = InvoiceModel::factory()->create();
     
         $this->assertTrue(self::$Invoice->id != null);

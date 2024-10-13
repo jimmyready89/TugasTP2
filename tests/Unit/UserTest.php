@@ -12,12 +12,14 @@ class UserTest extends TestCase
     protected static $user;
     protected static $password;
 
-    public function test_user_create(): void
-    {
+    public function test_init_database(): void {
         $this->artisan('migrate', [
             "--path" => "database/migrations/User"
-        ]);
+        ])->assertSuccessful();
+    }
 
+    public function test_user_create(): void
+    {
         self::$user = UserModel::factory()->create();
         
         $this->assertTrue(self::$user->id != null);
@@ -25,10 +27,10 @@ class UserTest extends TestCase
 
     public function test_set_profile(): void
     {
-        $UserProfile = UserProfileModel::factory()
+        UserProfileModel::factory()
             ->create(["userid" => self::$user->id]);
 
-        $this->assertTrue($UserProfile->userid !== null);
+        $this->assertTrue(self::$user->userid !== null);
     }
 
     public function test_set_password(): void
