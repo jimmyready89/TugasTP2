@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Models\Product\ProductModel;
 use App\Models\Product\ProductPriceModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 
 class ProductTest extends TestCase
 {
@@ -18,10 +16,20 @@ class ProductTest extends TestCase
             "--path" => "database/migrations/Product"
         ]);
 
-        $Product = ProductModel::factory()->create();
-        $ProductPrice = ProductPriceModel::factory()
-            ->create(["product_id" => $Product->id]);
-        
-        $this->assertTrue(true);
+        self::$Product = ProductModel::factory()->create();
+
+        $this->assertTrue(self::$Product->id != null);
+    }
+    
+    public function test_product_add_price(): void
+    {
+        $this->artisan('migrate', [
+            "--path" => "database/migrations/Product"
+        ]);
+
+        ProductPriceModel::factory()
+            ->create(["product_id" => self::$Product->id]);
+
+        $this->assertTrue(self::$Product->Price()->count() == 1);
     }
 }

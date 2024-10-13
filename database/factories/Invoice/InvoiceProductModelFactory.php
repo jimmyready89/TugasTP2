@@ -15,7 +15,8 @@ class InvoiceProductModelFactory extends Factory
         return [
             "sku" => fake()->randomNumber(),
             "nama" => fake()->name,
-            "price_per_unit" => fake()->randomDigit(),
+            "price_per_unit" => fake()->numberBetween(1500, 6000),
+            "count" => fake()->randomNumber(),
             "userupdate_id" => 0
         ];
     }

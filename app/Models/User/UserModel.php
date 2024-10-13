@@ -69,4 +69,16 @@ class UserModel extends Authenticatable
     public function Profile(): HasOne{
         return $this->hasOne(UserProfileModel::class, 'userid', 'id');
     }
+
+    public function Inactive(): void{
+        $this->fill([
+            'active' => 0
+        ])->save();
+    }
+
+    public function Actived(): void{
+        $this->fill([
+            'active' => 1
+        ])->save();
+    }
 }

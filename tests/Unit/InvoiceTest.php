@@ -6,16 +6,10 @@ use Tests\TestCase;
 use App\Models\Invoice\InvoiceModel;
 use App\Models\Invoice\InvoiceProductModel;
 use App\Models\Invoice\InvoiceTotalPriceModel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class InvoiceTest extends TestCase
 {
     protected static $Invoice;
-    protected static $InvoiceProduct;
-    protected static $InvoiceProductList;
-    protected static $InvoiceTotalPrice;
 
     public function test_invoice_create(): void
     {
@@ -23,16 +17,33 @@ class InvoiceTest extends TestCase
             '--path' => 'database/migrations/Invoice',
         ]);
     
-        $Invoice = InvoiceModel::factory()->create();
+        self::$Invoice = InvoiceModel::factory()->create();
     
+        $this->assertTrue(self::$Invoice->id != null);
+    }
+
+    public function test_invoice_add_product() : void
+    {
         InvoiceProductModel::factory()->create([
-            'invoice_id' => $Invoice->id,
+            'invoice_id' => self::$Invoice->id,
         ]);
 
-        InvoiceTotalPriceModel::factory()->create([
-            'invoice_id' => $Invoice->id,
-        ]);
-    
-        $this->assertTrue(true);
+        $this->assertTrue(self::$Invoice->ProductList()->count() == 1);
+    }
+
+    public function test_invoice_update_total_price() : void
+    {
+        self::$Invoice->UpdateTotalPrice(1);
+
+        $PriceTotal = 0;
+        $TotalPriceFormInvoiceTable = self::$Invoice->InvoiceTotalPrice->total_price_after_discount;
+
+        $InvoiceProductList = self::$Invoice->ProductList;
+
+        foreach($InvoiceProductList as $InvoiceProduct){
+            $PriceTotal += $InvoiceProduct->price_per_unit * $InvoiceProduct->count;
+        }
+
+        $this->assertTrue($TotalPriceFormInvoiceTable == $PriceTotal && $PriceTotal != 0);
     }
 }
