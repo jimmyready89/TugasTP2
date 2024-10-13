@@ -46,4 +46,11 @@ class InvoiceTest extends TestCase
 
         $this->assertTrue($TotalPriceFormInvoiceTable == $PriceTotal && $PriceTotal != 0);
     }
+
+    public function test_invoice_remove_product() : void
+    {
+        self::$Invoice->ProductList[0]->delete();
+
+        $this->assertTrue(self::$Invoice->ProductList()->count() == 0);
+    }
 }
