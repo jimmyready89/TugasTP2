@@ -25,7 +25,7 @@ class SignController extends Controller
                 throw new \Exception('');
             }
 
-            if (!$UserModel->ValidatePassword($RequestValidate["password"])) {
+            if (!$UserModel->Login($RequestValidate["password"])) {
                 throw new \Exception('');
             }
         } catch (\Throwable $th) {

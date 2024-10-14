@@ -55,7 +55,7 @@ class UserModel extends Authenticatable
         return;
     }
 
-    public function ValidatePassword(string $Password): bool {
+    public function Login(string $Password): bool {
         $Salt = $this->salt;
         $PasswordToSaveDB = $this->PasswordCombineWithSalt($Password, $Salt);
 

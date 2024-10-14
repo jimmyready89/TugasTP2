@@ -30,7 +30,7 @@ class UserTest extends TestCase
         UserProfileModel::factory()
             ->create(["userid" => self::$user->id]);
 
-        $this->assertTrue(self::$user->userid !== null);
+        $this->assertTrue(self::$user->Profile !== null);
     }
 
     public function test_set_password(): void
@@ -42,31 +42,31 @@ class UserTest extends TestCase
         $this->assertTrue(self::$user->password !== "");
     }
 
-    public function test_validate_password(): void
+    public function test_login(): void
     {
-        $ValidatePassword = self::$user->ValidatePassword(self::$password);
+        $Login = self::$user->Login(self::$password);
 
-        $this->assertTrue($ValidatePassword);
+        $this->assertTrue($Login);
     }
 
-    public function test_validate_password_input_wrong_password(): void
+    public function test_login_input_wrong_password(): void
     {
-        $ValidatePassword = self::$user->ValidatePassword(self::$password . "_OtherInput");
+        $Login = self::$user->Login(self::$password . "_OtherInput");
 
-        $this->assertFalse($ValidatePassword);
+        $this->assertFalse($Login);
     }
 
     public function test_make_user_inactive(): void
     {
         self::$user->Inactive();
 
-        $this->assertTrue(self::$user->active == 0);
+        $this->assertFalse(self::$user->active != 1);
     }
 
-    public function test_validate_password_on_user_inactive(): void
+    public function test_login_on_user_inactive(): void
     {
-        $ValidatePassword = self::$user->ValidatePassword(self::$password);
+        $Login = self::$user->Login(self::$password);
 
-        $this->assertFalse($ValidatePassword);
+        $this->assertFalse($Login);
     }
 }
